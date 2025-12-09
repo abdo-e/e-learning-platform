@@ -1,0 +1,223 @@
+<app-navbar></app-navbar>
+
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-10 animate-fadeInDown">
+            <h1 class="text-4xl lg:text-5xl font-bold mb-3 gradient-text">My Learning Dashboard</h1>
+            <p class="text-gray-600 text-lg">Track your progress and achievements</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <!-- Enrolled Courses -->
+            <div class="card-modern p-6 hover-lift animate-fadeInUp">
+                <div class="flex items-center justify-between mb-4">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Enrolled Courses</p>
+                <p class="text-4xl font-bold text-gray-800">{{ stats.totalEnrolled }}</p>
+            </div>
+
+            <!-- Completed Courses -->
+            <div class="card-modern p-6 hover-lift animate-fadeInUp delay-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Completed</p>
+                <p class="text-4xl font-bold text-gray-800">{{ stats.totalCompleted }}</p>
+            </div>
+
+            <!-- Certificates -->
+            <div class="card-modern p-6 hover-lift animate-fadeInUp delay-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Certificates</p>
+                <p class="text-4xl font-bold text-gray-800">{{ stats.totalCertificates }}</p>
+            </div>
+
+            <!-- Learning Time -->
+            <div class="card-modern p-6 hover-lift animate-fadeInUp delay-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Learning Time</p>
+                <p class="text-4xl font-bold text-gray-800">{{ formatLearningTime(stats.totalLearningMinutes) }}</p>
+            </div>
+        </div>
+
+        <!-- Courses Tabs -->
+        <div class="card-modern p-8 mb-10">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">My Courses</h2>
+                <div class="flex space-x-2">
+                    <button
+                        class="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 bg-gradient-primary text-white shadow-lg">
+                        All ({{ enrolledCourses.length }})
+                    </button>
+                    <button
+                        class="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-600 hover:bg-gray-100">
+                        In Progress ({{ inProgressCourses.length }})
+                    </button>
+                    <button
+                        class="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 text-gray-600 hover:bg-gray-100">
+                        Completed ({{ completedCourses.length }})
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enrolled Courses Grid -->
+            <div *ngIf="enrolledCourses.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div *ngFor="let enrollment of enrolledCourses"
+                    class="bg-gradient-to-br from-white to-gray-50 rounded-2xl border-2 border-gray-200 hover:border-primary-400 hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer"
+                    (click)="goToCourse(enrollment.courseId._id || enrollment.courseId)">
+                    <!-- Course Header -->
+                    <div class="relative h-32 bg-gradient-to-br from-primary-500 to-accent-500 overflow-hidden">
+                        <div class="absolute inset-0 opacity-50">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white rounded-full filter blur-2xl"></div>
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg class="w-16 h-16 text-white opacity-50" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
+                            </svg>
+                        </div>
+                        <!-- Completion Badge -->
+                        <div *ngIf="enrollment.progress?.completed"
+                            class="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Completed</span>
+                        </div>
+                    </div>
+
+                    <!-- Course Content -->
+                    <div class="p-5">
+                        <h3
+                            class="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
+                            {{ enrollment.courseId.title || 'Course Title' }}
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">Enrolled: {{ enrollment.enrolledAt | date:'mediumDate' }}
+                        </p>
+
+                        <!-- Progress Bar -->
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-semibold text-gray-600">Progress</span>
+                                <span class="text-xs font-bold text-primary-600">{{
+                                    enrollment.progress?.progressPercentage || 0 }}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                <div class="bg-gradient-primary h-2 rounded-full transition-all duration-500"
+                                    [style.width.%]="enrollment.progress?.progressPercentage || 0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button
+                            class="w-full bg-gradient-primary text-white py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2">
+                            <span>{{ enrollment.progress?.completed ? 'Review Course' : 'Continue Learning' }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="enrolledCourses.length === 0" class="text-center py-16">
+                <div
+                    class="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <svg class="w-12 h-12 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">No Courses Yet</h3>
+                <p class="text-gray-600 mb-6">Start your learning journey by enrolling in a course!</p>
+                <a href="/main"
+                    class="inline-block bg-gradient-primary text-white px-8 py-3 rounded-xl font-bold hover:shadow-glow-lg hover:scale-105 transition-all duration-300">
+                    Browse Courses
+                </a>
+            </div>
+        </div>
+
+        <!-- Certificates Section -->
+        <div *ngIf="certificates.length > 0" class="card-modern p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <svg class="w-7 h-7 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
+                    </path>
+                </svg>
+                My Certificates
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div *ngFor="let cert of certificates"
+                    class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border-2 border-purple-200 p-6 hover:shadow-xl transition-all duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <div
+                            class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
+                                </path>
+                            </svg>
+                        </div>
+                        <span
+                            class="text-xs font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">Certified</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">{{ cert.courseTitle }}</h3>
+                    <p class="text-sm text-gray-600 mb-4">Completed: {{ cert.completedAt | date:'mediumDate' }}</p>
+                    <button (click)="downloadCertificate(cert.courseId)"
+                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        <span>Download PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+.taswira {
+    mix-blend-mode: darken;
+    background-color: transparent;
+    filter: brightness(0) invert(1);
+}

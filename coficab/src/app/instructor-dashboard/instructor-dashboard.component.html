@@ -1,0 +1,69 @@
+<div class="instructor-dashboard">
+    <div class="dashboard-header">
+        <h1>Instructor Dashboard</h1>
+        <button class="btn-create-course" (click)="createCourse()">+ Create New Course</button>
+    </div>
+
+    <div *ngIf="loading" class="loading">Loading...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <div *ngIf="!loading && !error">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-value">{{ stats.totalCourses }}</div>
+                <div class="stat-label">Total Courses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">{{ stats.totalStudents }}</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value">${{ stats.totalEarnings | number:'1.2-2' }}</div>
+                <div class="stat-label">Total Earnings</div>
+            </div>
+            <div class="stat-card highlight">
+                <div class="stat-icon">💵</div>
+                <div class="stat-value">${{ stats.availableBalance | number:'1.2-2' }}</div>
+                <div class="stat-label">Available Balance</div>
+                <button class="btn-payout" (click)="requestPayout()">Request Payout</button>
+            </div>
+        </div>
+
+        <!-- My Courses -->
+        <div class="section">
+            <h2>My Courses</h2>
+            <div class="courses-list">
+                <div *ngFor="let course of courses" class="course-item" (click)="viewCourseDetails(course._id)">
+                    <div class="course-info">
+                        <h3>{{ course.title }}</h3>
+                        <div class="course-meta">
+                            <span>{{ course.totalEnrollments }} students</span>
+                            <span>⭐ {{ course.averageRating | number:'1.1-1' }}</span>
+                            <span>${{ course.totalRevenue | number:'1.2-2' }} revenue</span>
+                        </div>
+                    </div>
+                    <button class="btn-edit" (click)="editCourse(course._id); $event.stopPropagation()">Edit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Payments -->
+        <div class="section">
+            <h2>Recent Payments</h2>
+            <div class="payments-list">
+                <div *ngFor="let payment of recentPayments" class="payment-item">
+                    <div class="payment-info">
+                        <strong>{{ payment.courseId?.title }}</strong>
+                        <span>{{ payment.userId?.name }}</span>
+                    </div>
+                    <div class="payment-amount">${{ payment.amount * 0.7 | number:'1.2-2' }}</div>
+                    <div class="payment-date">{{ payment.createdAt | date:'short' }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

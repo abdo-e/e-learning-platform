@@ -1,0 +1,287 @@
+<app-navbar></app-navbar>
+<div class="min-h-screen pt-20">
+  <!-- Hero Section -->
+  <header class="bg-gradient-hero relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl animate-float"></div>
+      <div class="absolute top-40 right-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-float delay-200"></div>
+      <div class="absolute -bottom-8 left-40 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-float delay-400"></div>
+    </div>
+
+    <div class="container mx-auto flex flex-col lg:flex-row items-center justify-between p-8 lg:p-16 relative z-10">
+      <div class="lg:w-1/2 text-white animate-fadeInUp">
+        <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          Welcome to <span class="inline-block animate-pulse-slow">E-Learn</span>
+        </h1>
+        <p class="text-lg lg:text-xl mb-8 text-gray-100 animate-fadeInUp delay-200">
+          Empowering you with quality education anytime, anywhere. Explore a variety of courses to enhance your skills and advance your career.
+        </p>
+        <button 
+          routerLink="/signup"
+          class="btn-gradient text-lg px-8 py-4 rounded-full shadow-glow-lg animate-fadeInUp delay-300 hover:scale-110 transition-transform duration-300">
+          Get Started
+          <svg class="inline-block w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="lg:w-1/2 mt-12 lg:mt-0 animate-fadeInRight">
+        <img 
+          src="../../assets/img/aab.png" 
+          alt="E-Learn Hero" 
+          class="w-full h-auto animate-float drop-shadow-2xl">
+      </div>
+    </div>
+  </header>
+
+  <!-- Featured Courses Section -->
+  <section class="py-16 lg:py-24 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl lg:text-5xl font-bold text-center mb-4 gradient-text animate-fadeInUp">
+        Featured Courses
+      </h2>
+      <p class="text-center text-gray-600 mb-12 animate-fadeInUp delay-100">
+        Discover our most popular courses designed by industry experts
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Course Card 1 -->
+        <div class="card-modern hover-lift group animate-fadeInUp delay-200">
+          <div class="relative overflow-hidden">
+            <img 
+              src="https://media.assettype.com/analyticsinsight%2F2024-07%2F6279110d-fcca-455e-94f5-0eb67d5798a3%2FPython1.png" 
+              alt="Python Course" 
+              class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="absolute top-4 right-4 bg-gradient-primary text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
+              Beginner
+            </span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-primary-600 transition-colors">
+              Introduction to Python
+            </h3>
+            <p class="text-gray-600 mb-4 line-clamp-2">
+              Learn the basics of Python programming and build your first applications with hands-on projects.
+            </p>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-500 flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                </svg>
+                2.5k students
+              </span>
+              <button class="text-primary-600 font-semibold hover:text-primary-700 transition-colors flex items-center group">
+                Explore
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Card 2 -->
+        <div class="card-modern hover-lift group animate-fadeInUp delay-300">
+          <div class="relative overflow-hidden">
+            <img 
+              src="https://www.mindinventory.com/blog/wp-content/uploads/2023/02/MEAN-stack.webp" 
+              alt="Web Development Course" 
+              class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="absolute top-4 right-4 bg-gradient-accent text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
+              Intermediate
+            </span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-primary-600 transition-colors">
+              Web Development Bootcamp
+            </h3>
+            <p class="text-gray-600 mb-4 line-clamp-2">
+              Become a full-stack web developer with hands-on projects and real-world experience.
+            </p>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-500 flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                </svg>
+                3.8k students
+              </span>
+              <button class="text-primary-600 font-semibold hover:text-primary-700 transition-colors flex items-center group">
+                Explore
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Card 3 -->
+        <div class="card-modern hover-lift group animate-fadeInUp delay-400">
+          <div class="relative overflow-hidden">
+            <img 
+              src="https://www.naukri.com/campus/career-guidance/wp-content/uploads/2023/11/what-is-data-science.jpg" 
+              alt="Data Science Course" 
+              class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-pink-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span class="absolute top-4 right-4 bg-gradient-secondary text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
+              Advanced
+            </span>
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold text-gray-800 mb-3 group-hover:text-primary-600 transition-colors">
+              Data Science Essentials
+            </h3>
+            <p class="text-gray-600 mb-4 line-clamp-2">
+              Dive into data analysis, visualization, and machine learning techniques with real datasets.
+            </p>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-500 flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                </svg>
+                1.9k students
+              </span>
+              <button class="text-primary-600 font-semibold hover:text-primary-700 transition-colors flex items-center group">
+                Explore
+                <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-16 lg:py-24 bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-pink-500 rounded-full filter blur-3xl"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <h2 class="text-4xl lg:text-5xl font-bold text-center mb-4 gradient-text animate-fadeInUp">
+        What Our Learners Say
+      </h2>
+      <p class="text-center text-gray-600 mb-12 animate-fadeInUp delay-100">
+        Join thousands of satisfied students worldwide
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="glass-white rounded-2xl p-8 hover-lift animate-fadeInUp delay-200">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold text-xl">
+              J
+            </div>
+            <div class="ml-4">
+              <p class="font-bold text-gray-800">Jane Doe</p>
+              <p class="text-sm text-gray-600">Software Engineer</p>
+            </div>
+          </div>
+          <div class="flex mb-3">
+            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" *ngFor="let star of [1,2,3,4,5]">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+          </div>
+          <p class="text-gray-700 italic">
+            "E-Learn has transformed my career! The courses are well-structured and the instructors are top-notch."
+          </p>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="glass-white rounded-2xl p-8 hover-lift animate-fadeInUp delay-300">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-accent rounded-full flex items-center justify-center text-white font-bold text-xl">
+              J
+            </div>
+            <div class="ml-4">
+              <p class="font-bold text-gray-800">John Smith</p>
+              <p class="text-sm text-gray-600">Data Analyst</p>
+            </div>
+          </div>
+          <div class="flex mb-3">
+            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" *ngFor="let star of [1,2,3,4,5]">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+          </div>
+          <p class="text-gray-700 italic">
+            "The hands-on projects helped me apply what I learned and build a strong portfolio."
+          </p>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="glass-white rounded-2xl p-8 hover-lift animate-fadeInUp delay-400">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-secondary rounded-full flex items-center justify-center text-white font-bold text-xl">
+              E
+            </div>
+            <div class="ml-4">
+              <p class="font-bold text-gray-800">Emily Johnson</p>
+              <p class="text-sm text-gray-600">UX Designer</p>
+            </div>
+          </div>
+          <div class="flex mb-3">
+            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" *ngFor="let star of [1,2,3,4,5]">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+          </div>
+          <p class="text-gray-700 italic">
+            "Exceptional platform with a wide range of courses. Highly recommend E-Learn to anyone looking to upskill."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-16 lg:py-24 bg-gradient-primary relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-10 right-10 w-64 h-64 bg-white rounded-full filter blur-3xl animate-pulse-slow"></div>
+      <div class="absolute bottom-10 left-10 w-64 h-64 bg-pink-300 rounded-full filter blur-3xl animate-pulse-slow delay-300"></div>
+    </div>
+
+    <div class="container mx-auto text-center px-4 relative z-10">
+      <h2 class="text-4xl lg:text-5xl font-bold mb-6 text-white animate-fadeInUp">
+        Ready to Start Learning?
+      </h2>
+      <p class="text-xl text-gray-100 mb-10 max-w-2xl mx-auto animate-fadeInUp delay-100">
+        Join thousands of learners and take your skills to the next level with E-Learn.
+      </p>
+      <button 
+        routerLink="/signup" 
+        class="bg-white text-primary-600 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 hover:scale-110 transition-all duration-300 shadow-2xl animate-fadeInUp delay-200 inline-flex items-center">
+        Sign Up Now
+        <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 text-gray-300 py-12">
+    <div class="container mx-auto text-center px-4">
+      <div class="mb-6">
+        <h3 class="text-2xl font-bold text-white mb-2">E-Learn</h3>
+        <p class="text-gray-400">Empowering learners worldwide</p>
+      </div>
+      <div class="flex justify-center space-x-6 mb-6">
+        <a href="#" class="hover:text-white transition-colors">About</a>
+        <a href="#" class="hover:text-white transition-colors">Courses</a>
+        <a href="#" class="hover:text-white transition-colors">Contact</a>
+        <a href="#" class="hover:text-white transition-colors">Privacy</a>
+      </div>
+      <p class="text-sm">&copy; 2025 E-Learn. All rights reserved.</p>
+    </div>
+  </footer>
+</div>

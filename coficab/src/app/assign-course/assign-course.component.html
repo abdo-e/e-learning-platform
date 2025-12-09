@@ -1,0 +1,214 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 animate-fade-in">
+            <button (click)="goBack()"
+                class="mb-4 flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Dashboard
+            </button>
+            <h1
+                class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                Assign Mandatory Course
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">Assign a course to your employees with a deadline</p>
+        </div>
+
+        <!-- Form Card -->
+        <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 p-8 animate-slide-up">
+            <form (ngSubmit)="onSubmit()" #assignForm="ngForm">
+                <!-- Course Selection -->
+                <div class="mb-6">
+                    <label for="courseId" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Select Course <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
+                            </svg>
+                        </div>
+                        <select id="courseId" name="courseId" [(ngModel)]="assignment.courseId" required
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200"
+                            #courseInput="ngModel">
+                            <option value="">-- Select a course --</option>
+                            <option *ngFor="let course of courses" [value]="course._id">{{ course.title }}</option>
+                        </select>
+                    </div>
+                    <p *ngIf="courseInput.invalid && courseInput.touched"
+                        class="mt-2 text-sm text-red-600 dark:text-red-400">
+                        Please select a course
+                    </p>
+                </div>
+
+                <!-- Deadline -->
+                <div class="mb-6">
+                    <label for="deadline" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Deadline (Optional)
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <input type="date" id="deadline" name="deadline" [(ngModel)]="assignment.deadline"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-200">
+                    </div>
+                </div>
+
+                <!-- Applicable To -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                        Assign To <span class="text-red-500">*</span>
+                    </label>
+                    <div class="space-y-3">
+                        <div [ngClass]="assignment.applicableTo === 'all' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-gray-700'"
+                            class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-200">
+                            <input type="radio" name="applicableTo" value="all" [(ngModel)]="assignment.applicableTo"
+                                class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                            <div class="ml-3">
+                                <span class="font-medium text-gray-900 dark:text-white">All Employees</span>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Assign to everyone in the company
+                                </p>
+                            </div>
+                        </div>
+
+                        <div [ngClass]="assignment.applicableTo === 'department' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-gray-700'"
+                            class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-200">
+                            <input type="radio" name="applicableTo" value="department"
+                                [(ngModel)]="assignment.applicableTo"
+                                class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                            <div class="ml-3">
+                                <span class="font-medium text-gray-900 dark:text-white">Specific Departments</span>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Assign to selected departments</p>
+                            </div>
+                        </div>
+
+                        <div [ngClass]="assignment.applicableTo === 'specific' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-gray-200 dark:border-gray-700'"
+                            class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-200">
+                            <input type="radio" name="applicableTo" value="specific"
+                                [(ngModel)]="assignment.applicableTo"
+                                class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                            <div class="ml-3">
+                                <span class="font-medium text-gray-900 dark:text-white">Specific Employees</span>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Assign to selected employees</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department Selection -->
+                <div *ngIf="assignment.applicableTo === 'department'" class="mb-6 animate-fade-in">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Select Departments <span class="text-red-500">*</span>
+                    </label>
+                    <div
+                        class="space-y-2 max-h-48 overflow-y-auto p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+                        <label *ngFor="let dept of departments"
+                            class="flex items-center gap-3 p-2 hover:bg-white dark:hover:bg-gray-700 rounded transition-colors cursor-pointer">
+                            <input type="checkbox" [value]="dept" [(ngModel)]="selectedDepartments[dept]"
+                                [name]="'dept_' + dept" class="w-4 h-4 text-purple-600 rounded focus:ring-purple-500">
+                            <span class="text-gray-900 dark:text-white">{{ dept }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Employee Selection -->
+                <div *ngIf="assignment.applicableTo === 'specific'" class="mb-6 animate-fade-in">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Select Employees <span class="text-red-500">*</span>
+                    </label>
+                    <div
+                        class="space-y-2 max-h-64 overflow-y-auto p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+                        <label *ngFor="let emp of employees"
+                            class="flex items-center gap-3 p-3 hover:bg-white dark:hover:bg-gray-700 rounded transition-colors cursor-pointer">
+                            <input type="checkbox" [value]="emp.employeeId"
+                                [(ngModel)]="selectedEmployees[emp.employeeId]" [name]="'emp_' + emp.employeeId"
+                                class="w-4 h-4 text-purple-600 rounded focus:ring-purple-500">
+                            <div class="flex-1">
+                                <span class="font-medium text-gray-900 dark:text-white">{{ emp.name }}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">({{ emp.department || 'N/A'
+                                    }})</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div *ngIf="successMessage"
+                    class="mb-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 animate-fade-in">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        <p class="text-green-800 dark:text-green-200">{{ successMessage }}</p>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div *ngIf="errorMessage"
+                    class="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 animate-fade-in">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-red-800 dark:text-red-200">{{ errorMessage }}</p>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex gap-4">
+                    <button type="submit" [disabled]="!assignForm.valid || loading"
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2">
+                        <svg *ngIf="loading" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        <span *ngIf="!loading">Assign Course</span>
+                        <span *ngIf="loading">Assigning...</span>
+                    </button>
+                    <button type="button" (click)="resetForm()" [disabled]="loading"
+                        class="px-6 py-3 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium border border-gray-300 dark:border-gray-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Info Card -->
+        <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 animate-slide-up"
+            style="animation-delay: 0.1s">
+            <div class="flex gap-3">
+                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h3 class="font-semibold text-blue-900 dark:text-blue-100 mb-1">Course Assignment Tips</h3>
+                    <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                        <li>• Mandatory courses will appear in employees' dashboards</li>
+                        <li>• Setting a deadline helps track completion rates</li>
+                        <li>• You can assign to all employees, specific departments, or individuals</li>
+                        <li>• Employees will receive notifications about new assignments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

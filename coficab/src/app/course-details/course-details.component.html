@@ -1,0 +1,683 @@
+<div *ngIf="course" class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4">
+  <div class="max-w-5xl mx-auto">
+    <!-- Course Header -->
+    <div class="glass-white rounded-3xl shadow-2xl overflow-hidden mb-8 animate-fadeInDown">
+      <div class="bg-gradient-primary p-8 lg:p-12 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+          <div class="absolute top-10 right-10 w-32 h-32 bg-white rounded-full filter blur-2xl animate-pulse-slow">
+          </div>
+          <div
+            class="absolute bottom-10 left-10 w-32 h-32 bg-pink-300 rounded-full filter blur-2xl animate-pulse-slow delay-300">
+          </div>
+        </div>
+
+        <div class="relative z-10">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                </path>
+              </svg>
+            </div>
+            <span class="text-sm font-semibold bg-white/20 px-4 py-1 rounded-full">Course</span>
+          </div>
+          <h1 class="text-4xl lg:text-5xl font-bold mb-4">{{ course.title }}</h1>
+          <p class="text-lg text-gray-100 mb-6">{{ course.description }}</p>
+          <div class="flex items-center space-x-4 text-sm">
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z">
+                </path>
+              </svg>
+              <span>Video Lessons</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>Self-paced</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Player Section -->
+    <div class="glass-white rounded-3xl shadow-2xl overflow-hidden mb-8 animate-fadeInUp delay-100">
+      <div class="p-6 lg:p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+          <svg class="w-6 h-6 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Course Video
+        </h2>
+        <div class="relative rounded-2xl overflow-hidden shadow-lg bg-gray-900">
+          <video #videoPlayer controls [src]="videoUrl" *ngIf="videoUrl && canPlayVideo" class="w-full rounded-2xl"
+            (ended)="onVideoEnded()" controlsList="nodownload noplaybackrate nodb" disablePictureInPicture>
+          </video>
+          <div *ngIf="!canPlayVideo" class="flex items-center justify-center h-96 bg-gray-800 text-white">
+            <div class="text-center">
+              <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                </path>
+              </svg>
+              <p class="text-lg">Video loading...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div *ngIf="course.quiz" class="glass-white rounded-3xl shadow-2xl overflow-hidden animate-fadeInUp delay-200">
+      <!-- Quiz Header -->
+      <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-white rounded-full filter blur-3xl animate-pulse-slow"></div>
+          <div
+            class="absolute bottom-0 left-0 w-64 h-64 bg-yellow-300 rounded-full filter blur-3xl animate-pulse-slow delay-500">
+          </div>
+        </div>
+
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                  </path>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-3xl font-bold text-white">Course Quiz</h2>
+                <p class="text-white/80 text-sm">Test your knowledge and earn your certificate</p>
+              </div>
+            </div>
+
+            <!-- Status Badges -->
+            <div class="flex items-center space-x-3">
+              <!-- Quiz Timer -->
+              <div *ngIf="quizTimeLimit > 0 && videoWatched"
+                class="flex items-center space-x-2 px-5 py-3 rounded-2xl backdrop-blur-sm shadow-lg" [ngClass]="{
+                  'bg-green-500/90 text-white': quizTimeRemaining > 60,
+                  'bg-yellow-500/90 text-white': quizTimeRemaining <= 60 && quizTimeRemaining > 30,
+                  'bg-red-500/90 text-white animate-pulse': quizTimeRemaining <= 30
+                }">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="font-bold text-lg">{{ formatTimeRemaining() }}</span>
+              </div>
+
+              <!-- Attempts Counter -->
+              <div *ngIf="maxAttempts > 0 && videoWatched"
+                class="bg-white/90 backdrop-blur-sm text-indigo-700 px-5 py-3 rounded-2xl text-sm font-bold flex items-center space-x-2 shadow-lg">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span>{{ attemptsUsed }}/{{ maxAttempts }} Attempts</span>
+              </div>
+
+              <!-- Unlocked Badge -->
+              <div *ngIf="videoWatched"
+                class="bg-green-500/90 backdrop-blur-sm text-white px-5 py-3 rounded-2xl text-sm font-bold flex items-center shadow-lg">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                Unlocked
+              </div>
+            </div>
+          </div>
+
+          <!-- Quiz Progress Bar -->
+          <div *ngIf="videoWatched" class="mt-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-white/90 text-sm font-semibold">Progress</span>
+              <span class="text-white/90 text-sm font-semibold">{{ course.quiz.length }} Questions</span>
+            </div>
+            <div class="w-full bg-white/20 rounded-full h-3 overflow-hidden backdrop-blur-sm">
+              <div
+                class="bg-gradient-to-r from-green-400 to-emerald-500 h-3 rounded-full transition-all duration-500 shadow-lg"
+                [style.width.%]="getQuizProgressPercentage()">
+              </div>
+            </div>
+            <p class="text-white/80 text-xs mt-2">{{ getAnsweredCount() }} of {{ course.quiz.length }} answered</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz Content -->
+      <div class="p-8">
+        <div *ngIf="videoWatched; else lockedQuiz">
+          <div class="space-y-6" (click)="startQuizTimer()">
+            <div *ngFor="let question of course.quiz; let i = index" class="group relative">
+              <!-- Question Card -->
+              <div
+                class="bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl border-2 border-gray-200 hover:border-indigo-400 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                <!-- Question Number Badge -->
+                <div
+                  class="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+                  <span class="text-white font-bold text-lg">{{ i + 1 }}</span>
+                </div>
+
+                <!-- Question Text -->
+                <div class="mb-6 pl-10">
+                  <p class="text-xl font-bold text-gray-800 leading-relaxed">
+                    {{ question.question }}
+                  </p>
+                </div>
+
+                <!-- Answer Options -->
+                <div class="space-y-4">
+                  <label *ngFor="let option of question.options; let j = index"
+                    class="flex items-center space-x-4 p-5 rounded-2xl bg-white border-2 cursor-pointer transition-all duration-300 group/option"
+                    [ngClass]="{
+                      'border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 hover:shadow-lg': userAnswers[i] !== j,
+                      'border-indigo-500 bg-indigo-50 shadow-lg ring-4 ring-indigo-200': userAnswers[i] === j
+                    }">
+                    <!-- Custom Radio Button -->
+                    <div class="relative flex-shrink-0">
+                      <input type="radio" [name]="'question' + i" [value]="j" [(ngModel)]="userAnswers[i]"
+                        class="sr-only" />
+                      <div
+                        class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300"
+                        [ngClass]="{
+                          'border-gray-300 bg-white': userAnswers[i] !== j,
+                          'border-indigo-600 bg-indigo-600': userAnswers[i] === j
+                        }">
+                        <div *ngIf="userAnswers[i] === j" class="w-3 h-3 bg-white rounded-full animate-scaleIn"></div>
+                      </div>
+                    </div>
+
+                    <!-- Option Letter Badge -->
+                    <div
+                      class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm transition-all duration-300"
+                      [ngClass]="{
+                        'bg-gray-100 text-gray-600': userAnswers[i] !== j,
+                        'bg-indigo-600 text-white': userAnswers[i] === j
+                      }">
+                      {{ ['A', 'B', 'C', 'D'][j] }}
+                    </div>
+
+                    <!-- Option Text -->
+                    <span class="flex-1 font-medium text-gray-700 transition-colors duration-300" [ngClass]="{
+                        'group-hover/option:text-indigo-700': userAnswers[i] !== j,
+                        'text-indigo-900': userAnswers[i] === j
+                      }">
+                      {{ option.text }}
+                    </span>
+
+                    <!-- Selected Checkmark -->
+                    <svg *ngIf="userAnswers[i] === j" class="w-6 h-6 text-indigo-600 animate-scaleIn"
+                      fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"></path>
+                    </svg>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button (click)="submitQuiz()"
+            class="mt-10 w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-5 px-8 rounded-2xl font-bold text-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center group relative overflow-hidden">
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </div>
+            <svg class="w-7 h-7 mr-3 relative z-10 transform group-hover:rotate-12 transition-transform duration-300"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="relative z-10">Submit Quiz</span>
+          </button>
+        </div>
+
+        <!-- Locked Quiz State -->
+        <ng-template #lockedQuiz>
+          <div class="text-center py-16">
+            <div class="relative inline-block mb-6">
+              <div
+                class="w-28 h-28 bg-gradient-to-br from-red-100 to-pink-100 rounded-3xl flex items-center justify-center animate-pulse-slow shadow-xl">
+                <svg class="w-14 h-14 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                  </path>
+                </svg>
+              </div>
+              <div
+                class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">Quiz Locked</h3>
+            <p class="text-gray-600 text-lg mb-6">Complete the video to unlock the quiz</p>
+            <div
+              class="inline-flex items-center space-x-2 bg-red-50 text-red-700 px-6 py-3 rounded-full border-2 border-red-200">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span class="font-semibold">Watch the complete video first</span>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Quiz Result -->
+        <div *ngIf="quizResult !== null"
+          class="mt-8 p-8 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-2 border-green-300 rounded-3xl animate-scaleIn shadow-2xl">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+              <div class="relative">
+                <div
+                  class="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-xl animate-bounce">
+                  <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div
+                  class="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                  <span class="text-lg">🎉</span>
+                </div>
+              </div>
+              <div>
+                <p class="text-sm text-green-700 font-semibold uppercase tracking-wide mb-1">Your Score</p>
+                <p class="text-5xl font-bold text-green-800 mb-1">{{ quizResult }}<span
+                    class="text-3xl text-green-600">/{{ course.quiz.length }}</span></p>
+                <p class="text-sm text-green-600 font-medium">Questions Correct</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <div
+                class="inline-block bg-gradient-to-br from-green-500 to-emerald-600 text-white px-8 py-6 rounded-3xl shadow-xl">
+                <p class="text-6xl font-bold mb-1">{{ (quizResult / course.quiz.length * 100).toFixed(0) }}%</p>
+                <p class="text-sm font-semibold uppercase tracking-wide">Success Rate</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificate Download -->
+        <div *ngIf="canDownloadCertificate" data-certificate-section
+          class="mt-8 p-8 bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 border-2 border-purple-300 rounded-3xl animate-scaleIn shadow-2xl">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+              <div class="relative">
+                <div
+                  class="w-24 h-24 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center shadow-xl">
+                  <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
+                    </path>
+                  </svg>
+                </div>
+                <div
+                  class="absolute -top-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                  <span class="text-2xl">⭐</span>
+                </div>
+              </div>
+              <div>
+                <p class="text-sm text-purple-700 font-semibold uppercase tracking-wide mb-1">Congratulations!</p>
+                <p class="text-3xl font-bold text-purple-900 mb-1">Certificate Available</p>
+                <p class="text-purple-600 font-medium">You've successfully completed this course</p>
+              </div>
+            </div>
+            <button (click)="downloadCertificate()"
+              class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-3 group">
+              <svg class="w-6 h-6 transform group-hover:translate-y-1 transition-transform duration-300" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+              </svg>
+              <span>Download Certificate</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ratings & Reviews Section -->
+    <div class="glass-white rounded-3xl shadow-2xl overflow-hidden animate-fadeInUp delay-250 mt-8">
+      <!-- Ratings Header -->
+      <div class="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 p-8 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-white rounded-full filter blur-3xl animate-pulse-slow"></div>
+          <div
+            class="absolute bottom-0 left-0 w-64 h-64 bg-pink-300 rounded-full filter blur-3xl animate-pulse-slow delay-500">
+          </div>
+        </div>
+
+        <div class="relative z-10">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+              <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                  </path>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-3xl font-bold text-white">Ratings & Reviews</h2>
+                <p class="text-white/80 text-sm">See what others think about this course</p>
+              </div>
+            </div>
+
+            <!-- Average Rating Display -->
+            <div class="text-center bg-white/20 backdrop-blur-sm rounded-2xl px-8 py-4 shadow-lg">
+              <div class="text-5xl font-bold text-white mb-1">{{ averageRating.toFixed(1) }}</div>
+              <div class="flex items-center justify-center mb-2">
+                <svg *ngFor="let star of [1,2,3,4,5]" class="w-6 h-6"
+                  [ngClass]="star <= averageRating ? 'text-white' : 'text-white opacity-30'" fill="currentColor"
+                  viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                  </path>
+                </svg>
+              </div>
+              <p class="text-white/90 text-sm font-semibold">{{ totalRatings }} {{ totalRatings === 1 ? 'Review' :
+                'Reviews' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ratings Content -->
+      <div class="p-8">
+        <!-- Submit Rating Form -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl border-2 border-orange-200">
+          <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+              </path>
+            </svg>
+            Rate This Course
+          </h3>
+
+          <!-- Star Rating Input -->
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Your Rating</label>
+            <div class="flex items-center space-x-2">
+              <button *ngFor="let star of [1,2,3,4,5]" (click)="userRating = star" type="button"
+                class="focus:outline-none transform hover:scale-125 transition-transform duration-200">
+                <svg class="w-10 h-10 cursor-pointer" [class.text-yellow-400]="star <= userRating"
+                  [class.text-gray-300]="star > userRating" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                  </path>
+                </svg>
+              </button>
+              <span *ngIf="userRating > 0" class="ml-4 text-2xl font-bold text-orange-600">{{ userRating }}.0</span>
+            </div>
+          </div>
+
+          <!-- Comment Input -->
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Your Review (Optional)</label>
+            <textarea [(ngModel)]="userComment" rows="3" placeholder="Share your experience with this course..."
+              class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition-all duration-300 outline-none resize-none"></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button (click)="submitRating()"
+            class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-3 rounded-xl font-bold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+              </path>
+            </svg>
+            <span>Submit Rating</span>
+          </button>
+        </div>
+
+        <!-- Reviews List -->
+        <div *ngIf="courseRatings.length > 0" class="space-y-4">
+          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z">
+              </path>
+            </svg>
+            Student Reviews ({{ courseRatings.length }})
+          </h3>
+
+          <div *ngFor="let rating of courseRatings"
+            class="bg-white rounded-2xl border-2 border-gray-200 hover:border-orange-300 hover:shadow-lg transition-all duration-300 p-6">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center space-x-3">
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-800">{{ rating.userId?.name || 'Anonymous User' }}</h4>
+                  <div class="flex items-center space-x-1">
+                    <svg *ngFor="let star of [1,2,3,4,5]" class="w-4 h-4"
+                      [class.text-yellow-400]="star <= rating.rating" [class.text-gray-300]="star > rating.rating"
+                      fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                      </path>
+                    </svg>
+                    <span class="text-sm font-bold text-gray-600 ml-2">{{ rating.rating }}.0</span>
+                  </div>
+                </div>
+              </div>
+              <span class="text-sm text-gray-500">{{ rating.createdAt | date:'short' }}</span>
+            </div>
+            <p *ngIf="rating.comment" class="text-gray-700 leading-relaxed pl-15">{{ rating.comment }}</p>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="courseRatings.length === 0" class="text-center py-16">
+          <div
+            class="w-24 h-24 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <svg class="w-12 h-12 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">No Reviews Yet</h3>
+          <p class="text-gray-600 mb-6">Be the first to rate this course!</p>
+          <div
+            class="inline-flex items-center space-x-2 bg-orange-50 text-orange-700 px-6 py-3 rounded-full border-2 border-orange-200">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <span class="font-semibold">Share your experience above</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discussions Section -->
+    <div class="glass-white rounded-3xl shadow-2xl overflow-hidden animate-fadeInUp delay-300 mt-8">
+      <!-- Discussions Header -->
+      <div class="bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 p-8 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-white rounded-full filter blur-3xl animate-pulse-slow"></div>
+          <div
+            class="absolute bottom-0 left-0 w-64 h-64 bg-green-300 rounded-full filter blur-3xl animate-pulse-slow delay-500">
+          </div>
+        </div>
+
+        <div class="relative z-10">
+          <div class="flex items-center space-x-4">
+            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                </path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-3xl font-bold text-white">Course Discussions</h2>
+              <p class="text-white/80 text-sm">Ask questions and share insights with other learners</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discussions Content -->
+      <div class="p-8">
+        <!-- New Discussion Form -->
+        <div class="mb-8 p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-200">
+          <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+            <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Start a Discussion
+          </h3>
+          <textarea [(ngModel)]="newDiscussionMessage" rows="3" placeholder="Ask a question or share your thoughts..."
+            class="w-full px-4 py-3 border-2 border-blue-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none resize-none mb-4"></textarea>
+          <button (click)="postDiscussion()"
+            class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+            <span>Post Discussion</span>
+          </button>
+        </div>
+
+        <!-- Discussions List -->
+        <div *ngIf="discussions.length > 0" class="space-y-6">
+          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z">
+              </path>
+            </svg>
+            All Discussions ({{ discussions.length }})
+          </h3>
+
+          <div *ngFor="let discussion of discussions; let i = index"
+            class="bg-white rounded-2xl border-2 border-gray-200 hover:border-cyan-300 hover:shadow-lg transition-all duration-300 overflow-hidden">
+            <!-- Discussion Header -->
+            <div class="p-6 bg-gradient-to-r from-gray-50 to-blue-50">
+              <div class="flex items-start space-x-4">
+                <div
+                  class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between mb-2">
+                    <h4 class="font-bold text-gray-800">{{ discussion.userId?.name || 'Anonymous User' }}</h4>
+                    <span class="text-sm text-gray-500">{{ discussion.createdAt | date:'short' }}</span>
+                  </div>
+                  <p class="text-gray-700 leading-relaxed">{{ discussion.message }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Replies Section -->
+            <div *ngIf="discussion.replies && discussion.replies.length > 0"
+              class="px-6 py-4 bg-gray-50 border-t-2 border-gray-100">
+              <div class="space-y-4">
+                <div *ngFor="let reply of discussion.replies"
+                  class="flex items-start space-x-3 pl-6 border-l-4 border-cyan-300">
+                  <div
+                    class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-teal-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between mb-1">
+                      <span class="font-semibold text-gray-800 text-sm">{{ reply.userId?.name || 'Anonymous User'
+                        }}</span>
+                      <span class="text-xs text-gray-500">{{ reply.createdAt | date:'short' }}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm">{{ reply.message }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reply Form -->
+            <div class="p-6 border-t-2 border-gray-100">
+              <button (click)="toggleReplyForm(discussion._id)"
+                class="text-cyan-600 hover:text-cyan-700 font-semibold text-sm flex items-center space-x-2 transition-colors duration-300 mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                </svg>
+                <span>{{ showReplyForm[discussion._id] ? 'Cancel' : 'Reply' }}</span>
+              </button>
+
+              <div *ngIf="showReplyForm[discussion._id]" class="animate-fadeInUp">
+                <textarea [(ngModel)]="replyMessages[discussion._id]" rows="2" placeholder="Write your reply..."
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100 transition-all duration-300 outline-none resize-none mb-3"></textarea>
+                <button (click)="postReply(discussion._id)"
+                  class="bg-gradient-to-r from-cyan-600 to-teal-600 text-white px-5 py-2 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center space-x-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                  </svg>
+                  <span>Send Reply</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="discussions.length === 0" class="text-center py-16">
+          <div
+            class="w-24 h-24 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <svg class="w-12 h-12 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-2">No Discussions Yet</h3>
+          <p class="text-gray-600 mb-6">Be the first to start a conversation about this course!</p>
+          <div
+            class="inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-6 py-3 rounded-full border-2 border-blue-200">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <span class="font-semibold">Use the form above to post a question</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

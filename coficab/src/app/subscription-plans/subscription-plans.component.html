@@ -1,0 +1,146 @@
+<div class="subscription-container">
+    <!-- Header -->
+    <div class="subscription-header">
+        <h1>Choose Your Plan</h1>
+        <p>Unlock unlimited learning with our premium subscription</p>
+    </div>
+
+    <!-- Current Subscription Status -->
+    <div *ngIf="hasActiveSubscription" class="current-subscription">
+        <div class="status-card">
+            <h3>✓ Active Subscription</h3>
+            <p>You are currently on the <strong>{{ currentSubscription.plan }}</strong> plan</p>
+            <p class="renewal-date">
+                Renews on: {{ currentSubscription.currentPeriodEnd | date:'mediumDate' }}
+            </p>
+            <button class="btn-cancel" (click)="cancelSubscription()" [disabled]="processing">
+                Cancel Subscription
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading">
+        <p>Loading subscription plans...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error">
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- Plans Grid -->
+    <div *ngIf="!loading && !error" class="plans-grid">
+        <div *ngFor="let plan of plans" class="plan-card" [class.popular]="plan.id === 'yearly'"
+            [class.current]="isCurrentPlan(plan.id)">
+            <!-- Popular Badge -->
+            <div *ngIf="plan.id === 'yearly'" class="popular-badge">
+                MOST POPULAR
+            </div>
+
+            <!-- Current Plan Badge -->
+            <div *ngIf="isCurrentPlan(plan.id)" class="current-badge">
+                CURRENT PLAN
+            </div>
+
+            <div class="plan-header">
+                <h2>{{ plan.name }}</h2>
+                <div class="price">
+                    <span class="currency">$</span>
+                    <span class="amount">{{ formatPrice(plan.price) }}</span>
+                    <span class="period">/ {{ plan.interval }}</span>
+                </div>
+                <p *ngIf="plan.savings" class="savings">Save {{ plan.savings }}</p>
+                <p *ngIf="plan.id === 'yearly'" class="monthly-equivalent">
+                    ${{ formatPrice(plan.price / 12) }}/month
+                </p>
+            </div>
+
+            <div class="plan-features">
+                <h3>What's Included:</h3>
+                <ul>
+                    <li *ngIf="plan.features.unlimitedCourses">
+                        <span class="check">✓</span>
+                        Unlimited access to all courses
+                    </li>
+                    <li *ngIf="plan.features.premiumVideos">
+                        <span class="check">✓</span>
+                        Premium video content
+                    </li>
+                    <li *ngIf="plan.features.offlineMode">
+                        <span class="check">✓</span>
+                        Offline mode
+                    </li>
+                    <li *ngIf="plan.features.certificatePriority">
+                        <span class="check">✓</span>
+                        Priority certificate generation
+                    </li>
+                    <li *ngIf="plan.features.supportPriority">
+                        <span class="check">✓</span>
+                        Priority support
+                    </li>
+                    <li *ngIf="!plan.features.supportPriority">
+                        <span class="cross">✗</span>
+                        <span class="disabled">Priority support</span>
+                    </li>
+                </ul>
+            </div>
+
+            <button [class]="getButtonClass(plan)" (click)="subscribeToPlan(plan)"
+                [disabled]="processing || isCurrentPlan(plan.id)">
+                {{ getButtonText(plan) }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="benefits-section">
+        <h2>Why Subscribe?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">📚</div>
+                <h3>Unlimited Learning</h3>
+                <p>Access to all courses in our marketplace without individual purchases</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🎥</div>
+                <h3>Premium Content</h3>
+                <p>Exclusive premium videos and advanced course materials</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📱</div>
+                <h3>Learn Offline</h3>
+                <p>Download courses and learn anywhere, anytime</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🏆</div>
+                <h3>Certificates</h3>
+                <p>Priority certificate generation for completed courses</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <h4>Can I cancel anytime?</h4>
+                <p>Yes, you can cancel your subscription at any time. You'll retain access until the end of your billing
+                    period.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Can I switch plans?</h4>
+                <p>Yes, you can upgrade or downgrade your plan at any time. Changes will be prorated.</p>
+            </div>
+            <div class="faq-item">
+                <h4>What payment methods do you accept?</h4>
+                <p>We accept all major credit cards through Stripe's secure payment processing.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Do you offer refunds?</h4>
+                <p>We offer a 7-day money-back guarantee for new subscriptions.</p>
+            </div>
+        </div>
+    </div>
+</div>

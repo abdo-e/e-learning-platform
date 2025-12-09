@@ -1,0 +1,119 @@
+<div class="marketplace-container">
+    <!-- Header -->
+    <div class="marketplace-header">
+        <h1>Course Marketplace</h1>
+        <p>Discover and purchase premium courses from expert instructors</p>
+    </div>
+
+    <!-- Subscription Banner -->
+    <div *ngIf="!hasActiveSubscription" class="subscription-banner">
+        <div class="banner-content">
+            <h3>🎓 Get Unlimited Access!</h3>
+            <p>Subscribe now and get access to ALL courses, premium videos, and offline mode</p>
+            <button class="btn-subscribe" routerLink="/subscription-plans">View Plans</button>
+        </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="filters-section">
+        <div class="search-box">
+            <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()"
+                placeholder="Search courses..." class="search-input" />
+        </div>
+
+        <div class="filters">
+            <select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()" class="filter-select">
+                <option value="all">All Categories</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
+
+            <select [(ngModel)]="selectedDifficulty" (ngModelChange)="onFilterChange()" class="filter-select">
+                <option value="all">All Levels</option>
+                <option *ngFor="let difficulty of difficulties" [value]="difficulty">{{ difficulty }}</option>
+            </select>
+
+            <select [(ngModel)]="selectedPriceRange" (ngModelChange)="onFilterChange()" class="filter-select">
+                <option *ngFor="let range of priceRanges" [value]="range.value">{{ range.label }}</option>
+            </select>
+
+            <select [(ngModel)]="sortBy" (ngModelChange)="onFilterChange()" class="filter-select">
+                <option *ngFor="let option of sortOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading">
+        <p>Loading courses...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error">
+        <p>{{ error }}</p>
+    </div>
+
+    <!-- Courses Grid -->
+    <div *ngIf="!loading && !error" class="courses-grid">
+        <div *ngIf="filteredCourses.length === 0" class="no-courses">
+            <p>No courses found matching your criteria.</p>
+        </div>
+
+        <div *ngFor="let course of filteredCourses" class="course-card" (click)="viewCourseDetails(course._id)">
+            <!-- Course Type Badge -->
+            <div class="course-badge" [class.premium]="course.courseType === 'premium'">
+                {{ course.courseType === 'premium' ? 'PREMIUM' : 'PAID' }}
+            </div>
+
+            <!-- Discount Badge -->
+            <div *ngIf="hasDiscount(course)" class="discount-badge">
+                {{ course.discount.percentage }}% OFF
+            </div>
+
+            <div class="course-image">
+                <img [src]="course.previewVideoUrl || 'assets/default-course.jpg'" [alt]="course.title">
+            </div>
+
+            <div class="course-content">
+                <h3 class="course-title">{{ course.title }}</h3>
+                <p class="course-description">{{ course.description | slice:0:100 }}...</p>
+
+                <div class="course-meta">
+                    <span class="difficulty" [class]="course.difficulty.toLowerCase()">
+                        {{ course.difficulty }}
+                    </span>
+                    <span class="category">{{ course.category }}</span>
+                </div>
+
+                <div class="course-stats">
+                    <div class="rating">
+                        <span class="stars">⭐ {{ course.averageRating || 0 | number:'1.1-1' }}</span>
+                        <span class="enrollments">{{ course.totalEnrollments || 0 }} students</span>
+                    </div>
+                </div>
+
+                <div class="course-instructor" *ngIf="course.instructor">
+                    <span>By {{ course.instructor.name || 'Instructor' }}</span>
+                </div>
+
+                <div class="course-footer">
+                    <div class="price-section">
+                        <span *ngIf="hasDiscount(course)" class="original-price">${{ course.price }}</span>
+                        <span class="current-price">
+                            ${{ getDiscountedPrice(course) | number:'1.2-2' }}
+                        </span>
+                    </div>
+
+                    <button *ngIf="canPurchase(course)" class="btn-purchase" (click)="purchaseCourse(course, $event)"
+                        [disabled]="hasActiveSubscription && course.courseType !== 'premium'">
+                        {{ getCourseAccessLabel(course) }}
+                    </button>
+
+                    <button *ngIf="!canPurchase(course)" class="btn-subscribe-required" routerLink="/subscription-plans"
+                        (click)="$event.stopPropagation()">
+                        Subscription Required
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

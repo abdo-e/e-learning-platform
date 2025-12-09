@@ -1,0 +1,210 @@
+<!-- Navbar -->
+<app-navbar></app-navbar>
+
+<!-- Course Grid with padding to account for sticky navbar -->
+<div class="flex items-center justify-center min-h-screen pt-24 pb-12 px-4">
+  <div class="max-w-7xl mx-auto w-full">
+    <div class="text-center mb-12 animate-fadeInUp">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4 gradient-text">Explore Courses</h1>
+      <p class="text-gray-600 text-lg">Discover amazing courses to enhance your skills</p>
+
+      <!-- Quick Access Buttons -->
+      <div class="flex justify-center gap-4 mt-6">
+        <a routerLink="/marketplace"
+          class="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+          </svg>
+          Course Marketplace
+        </a>
+        <a routerLink="/subscription-plans"
+          class="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl font-bold hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
+            </path>
+          </svg>
+          Get Premium
+        </a>
+      </div>
+    </div>
+
+    <!-- Search & Filter Section -->
+    <div class="mb-8 p-6 glass-white rounded-2xl shadow-lg animate-fadeInUp">
+      <!-- Search Bar -->
+      <div class="mb-4">
+        <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()" placeholder="🔍 Search courses..."
+          class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary-500 focus:outline-none transition-colors" />
+      </div>
+
+      <!-- Filters Row -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <!-- Category Filter -->
+        <select [(ngModel)]="selectedCategory" (change)="applyFilters()"
+          class="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-primary-500 focus:outline-none transition-colors">
+          <option value="all">All Categories</option>
+          <option value="programming">Programming</option>
+          <option value="design">Design</option>
+          <option value="business">Business</option>
+          <option value="marketing">Marketing</option>
+        </select>
+
+        <!-- Difficulty Filter -->
+        <select [(ngModel)]="selectedDifficulty" (change)="applyFilters()"
+          class="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-primary-500 focus:outline-none transition-colors">
+          <option value="all">All Levels</option>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+
+        <!-- Sort -->
+        <select [(ngModel)]="selectedSort" (change)="applyFilters()"
+          class="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-primary-500 focus:outline-none transition-colors">
+          <option value="newest">Newest First</option>
+          <option value="popular">Most Popular</option>
+          <option value="rating">Highest Rated</option>
+        </select>
+
+        <!-- My Courses Toggle -->
+        <button (click)="toggleMyCoursesView()"
+          [class]="showMyCoursesOnly ? 'bg-gradient-primary text-white' : 'bg-white text-gray-700 border-2 border-gray-200'"
+          class="px-4 py-2 rounded-lg font-semibold transition-all hover:scale-105">
+          {{ showMyCoursesOnly ? '📚 My Courses' : '🌐 All Courses' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let course of courses; let i = index" class="card-modern hover-lift group animate-fadeInUp"
+        [style.animation-delay]="(i * 0.1) + 's'" [ngClass]="{'opacity-75': isCourseCompleted(course.title)}">
+
+        <!-- Course Header with Gradient -->
+        <div class="relative h-48 overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary-500 to-accent-500 opacity-90"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <svg class="w-20 h-20 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+              </path>
+            </svg>
+          </div>
+
+          <!-- Completion Badge -->
+          <div *ngIf="isCourseCompleted(course.title)"
+            class="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center space-x-2 animate-bounce">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <span>Completed</span>
+          </div>
+
+          <!-- Difficulty Badge -->
+          <div class="absolute top-4 left-4">
+            <span class="px-4 py-2 rounded-full text-sm font-bold shadow-lg text-white" [ngClass]="{
+                'bg-gradient-to-r from-green-400 to-green-600': course.difficulty === 'Beginner',
+                'bg-gradient-to-r from-yellow-400 to-orange-600': course.difficulty === 'Intermediate',
+                'bg-gradient-to-r from-red-400 to-pink-600': course.difficulty === 'Advanced'
+              }">
+              {{ course.difficulty }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Course Content -->
+        <div class="p-6">
+          <!-- Course Title -->
+          <a [href]="'/course/' + course._id"
+            class="block mb-3 text-2xl font-bold text-gray-800 hover:text-primary-600 transition-colors line-clamp-2 group-hover:gradient-text">
+            {{ course.title }}
+            <span *ngIf="isCourseCompleted(course.title)" class="text-lg text-green-500 ml-2">
+              ✓
+            </span>
+          </a>
+
+          <!-- Course Category -->
+          <div class="flex items-center mb-3 text-gray-600">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+              </path>
+            </svg>
+            <span class="font-medium">{{ course.category }}</span>
+          </div>
+
+          <!-- Course Description -->
+          <p class="mb-4 text-gray-600 line-clamp-3">
+            {{ course.description }}
+          </p>
+
+          <!-- Progress Bar (if course is in progress) -->
+          <div *ngIf="getCourseProgressPercentage(course._id) > 0 && !isCourseCompletedNew(course._id)" class="mb-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-semibold text-primary-600">In Progress</span>
+              <span class="text-sm font-bold text-primary-600">{{ getCourseProgressPercentage(course._id) }}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+              <div class="bg-gradient-primary h-2 rounded-full transition-all duration-500"
+                [style.width]="getCourseProgressPercentage(course._id) + '%'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Course Stats -->
+          <div class="flex items-center justify-between mb-4 text-sm text-gray-500">
+            <div class="flex items-center space-x-1">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z">
+                </path>
+              </svg>
+              <span>Lessons</span>
+            </div>
+            <div class="flex items-center space-x-1">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>Self-paced</span>
+            </div>
+          </div>
+
+          <!-- View Course Button -->
+          <a [href]="'/course/' + course._id"
+            class="block w-full text-center px-4 py-3 rounded-xl font-bold text-white transition-all duration-300 relative overflow-hidden group"
+            [ngClass]="{
+              'bg-gradient-primary hover:shadow-glow': !isCourseCompleted(course.title),
+              'bg-gray-400 hover:bg-gray-500': isCourseCompleted(course.title)
+            }">
+            <span class="relative z-10 flex items-center justify-center">
+              {{ isCourseCompleted(course.title) ? 'Review Course' : 'Start Learning' }}
+              <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6">
+                </path>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="courses.length === 0" class="text-center py-20 animate-fadeInUp">
+      <div
+        class="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-slow">
+        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+          </path>
+        </svg>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-800 mb-2">No Courses Available</h3>
+      <p class="text-gray-600">Check back soon for new courses!</p>
+    </div>
+  </div>
+</div>
