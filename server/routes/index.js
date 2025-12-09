@@ -1,27 +1,35 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
 // Import route modules
-const userRoutes = require("./user.routes");
-const authRoutes = require("./auth.routes");
-const courseRoutes = require("./course.routes");
-const videoRoutes = require("./video.routes");
-const analyticsRoutes = require("./analytics.routes");
+const authRoutes = require('./auth.routes');
+const userRoutes = require('./user.routes');
+const courseRoutes = require('./course.routes');
+const videoRoutes = require('./video.routes');
+const analyticsRoutes = require('./analytics.routes');
+const paymentRoutes = require('./payment.routes');
+const subscriptionRoutes = require('./subscription.routes');
+const instructorRoutes = require('./instructor.routes');
+const corporateRoutes = require('./corporate.routes');
 
-// Mount routes
-router.use("/users", userRoutes);
-router.use("/auth", authRoutes);
-router.use("/courses", courseRoutes);
-router.use("/videos", videoRoutes);
-router.use("/analytics", analyticsRoutes);
-
-// Health check route
-router.get("/health", (req, res) => {
+// Health check endpoint
+router.get('/health', (req, res) => {
     res.status(200).json({
         success: true,
-        message: "API is running",
-        timestamp: new Date().toISOString(),
+        message: 'API is running',
+        timestamp: new Date().toISOString()
     });
 });
+
+// Register routes
+router.use('/auth', authRoutes);
+router.use('/users', userRoutes);
+router.use('/courses', courseRoutes);
+router.use('/videos', videoRoutes);
+router.use('/analytics', analyticsRoutes);
+router.use('/payments', paymentRoutes);
+router.use('/subscriptions', subscriptionRoutes);
+router.use('/instructors', instructorRoutes);
+router.use('/corporate', corporateRoutes);
 
 module.exports = router;

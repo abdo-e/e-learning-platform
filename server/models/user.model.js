@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'user'],
+    enum: ['admin', 'user', 'instructor', 'corporate_admin'],
     default: 'user'
   },
   // Legacy field - kept for backward compatibility during migration
@@ -130,7 +130,99 @@ const userSchema = new mongoose.Schema({
     lastLoginDate: {
       type: Date
     }
-  }
+  },
+  // Subscription reference
+  subscription: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Subscription'
+  },
+  subscriptionStatus: {
+    type: String,
+    enum: ['none', 'active', 'cancelled', 'expired'],
+    default: 'none'
+  },
+  // Company association (for corporate employees)
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company'
+  },
+  // Instructor profile
+  instructorProfile: {
+    isApproved: {
+      type: Boolean,
+      default: false
+    },
+    bio: {
+      type: String,
+      trim: true
+    },
+    expertise: [{
+      type: String,
+      trim: true
+    }],
+    totalEarnings: {
+      type: Number,
+      default: 0
+    },
+    availableBalance: {
+      type: Number,
+      default: 0
+    },
+    totalStudents: {
+      type: Number,
+      default: 0
+    },
+    totalCourses: {
+      type: Number,
+      default: 0
+    },
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5
+    },
+    totalRatings: {
+      type: Number,
+      default: 0
+    },
+    payoutDetails: {
+      accountType: {
+        type: String,
+        enum: ['bank', 'paypal', 'stripe']
+      },
+      accountInfo: {
+        type: Map,
+        of: String
+      }
+    },
+    appliedAt: {
+      type: Date
+    },
+    approvedAt: {
+      type: Date
+    }
+  },
+  // Purchased courses (for marketplace)
+  purchasedCourses: [{
+    courseId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+      required: true
+    },
+    purchasedAt: {
+      type: Date,
+      default: Date.now
+    },
+    price: {
+      type: Number,
+      required: true
+    },
+    paymentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Payment'
+    }
+  }]
 }, { timestamps: true }); // Adds createdAt and updatedAt fields
 
 const User = mongoose.model('User', userSchema);

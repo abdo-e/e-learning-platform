@@ -19,6 +19,69 @@ const courseSchema = new mongoose.Schema({
     enum: ["Beginner", "Intermediate", "Advanced"],
     required: true,
   },
+  // Instructor information
+  instructor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  // Pricing and marketplace
+  courseType: {
+    type: String,
+    enum: ['free', 'paid', 'premium'], // premium = subscription only
+    default: 'free'
+  },
+  price: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  currency: {
+    type: String,
+    default: 'USD',
+    uppercase: true
+  },
+  discount: {
+    percentage: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100
+    },
+    validUntil: {
+      type: Date
+    }
+  },
+  // Preview content for paid courses
+  previewVideoUrl: {
+    type: String
+  },
+  previewDescription: {
+    type: String
+  },
+  // Enrollment and revenue tracking
+  totalEnrollments: {
+    type: Number,
+    default: 0
+  },
+  totalRevenue: {
+    type: Number,
+    default: 0
+  },
+  // Corporate licensing
+  corporateLicensing: {
+    enabled: {
+      type: Boolean,
+      default: false
+    },
+    pricePerUser: {
+      type: Number,
+      default: 0
+    },
+    minimumUsers: {
+      type: Number,
+      default: 10
+    }
+  },
   videos: [
     {
       type: mongoose.Schema.Types.ObjectId,

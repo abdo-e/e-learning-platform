@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
+const { generateToken } = require("../middleware/auth");
 
 const SALT_ROUNDS = 10;
 
@@ -25,9 +26,13 @@ const login = async (req, res, next) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (isPasswordValid) {
+            // Generate JWT token
+            const token = generateToken(user._id);
+
             return res.status(200).json({
                 success: true,
                 message: "Login successful",
+                token,
                 _id: user._id,
                 email: user.email,
                 name: user.name,
@@ -75,9 +80,13 @@ const signup = async (req, res, next) => {
 
         await newUser.save();
 
+        // Generate JWT token
+        const token = generateToken(newUser._id);
+
         res.status(201).json({
             success: true,
             message: "User created successfully",
+            token,
             _id: newUser._id,
             name: newUser.name,
             email: newUser.email,
