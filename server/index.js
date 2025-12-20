@@ -12,6 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
 // Connect to MongoDB
 connectDB();
 
@@ -33,7 +39,14 @@ app.get("/", (req, res) => {
 });
 
 // API Routes
+const instructorRoutes = require("./routes/instructor.routes");
 app.use("/api", routes);
+app.use("/api/instructor", instructorRoutes);
+
+// Diagnostic route
+app.get("/api/test-route", (req, res) => {
+  res.json({ message: "API is working correctly" });
+});
 
 // Legacy video upload route (frontend uses /upload instead of /api/videos/upload)
 const upload = require("./config/multer");

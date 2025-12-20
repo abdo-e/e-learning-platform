@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+console.log('--- Loading API Routes ---');
+
 // Import route modules
 const authRoutes = require('./auth.routes');
 const userRoutes = require('./user.routes');
@@ -29,7 +31,7 @@ router.use('/videos', videoRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/subscriptions', subscriptionRoutes);
-router.use('/instructor', instructorRoutes);
+// router.use('/instructor', instructorRoutes); (Moved to index.js for better visibility)
 router.use('/corporate', corporateRoutes);
 
 module.exports = router;
