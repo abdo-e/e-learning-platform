@@ -10,10 +10,27 @@ import { User } from '../models/user.model';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  user: User = new User('', '', ''); // Initialize User with default values
+  user: any = {
+    name: '',
+    email: '',
+    password: '',
+    role: 'user',
+    companyName: '',
+    industry: '',
+    size: ''
+  };
+  isCorporate: boolean = false;
   message: string = '';
+  isLoading: boolean = false;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) { }
+
+  // Toggle between individual and corporate account
+  toggleAccountType(type: 'individual' | 'corporate'): void {
+    this.isCorporate = type === 'corporate';
+    this.user.role = this.isCorporate ? 'corporate_admin' : 'user';
+    this.message = '';
+  }
 
   // Handle form submission
   signup(signupForm: NgForm): void {
@@ -22,15 +39,21 @@ export class SignupComponent {
       return;
     }
 
+    this.isLoading = true;
+
     // Call the signup method from UserService
     this.userService.signup(this.user).subscribe(
       (response) => {
+        this.isLoading = false;
         this.message = 'Account created successfully!';
         console.log('Signup successful:', response);
-        this.router.navigate(['/login']); // Redirect to login page after successful signup
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
       },
       (error) => {
-        this.message = 'Failed to create account. Please try again.';
+        this.isLoading = false;
+        this.message = error || 'Failed to create account. Please try again.';
         console.error('Signup error:', error);
       }
     );

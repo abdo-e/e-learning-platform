@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const Company = require("../models/company.model");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../middleware/auth");
 
@@ -56,7 +57,7 @@ const login = async (req, res, next) => {
  */
 const signup = async (req, res, next) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role, companyName, industry, size } = req.body;
 
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -75,17 +76,52 @@ const signup = async (req, res, next) => {
             name,
             email,
             password: hashedPassword,
-            role: "user", // Default role
+            role: role || "user", // Default role
         });
 
         await newUser.save();
+
+        // If it's a corporate admin, create the company
+        if (role === "corporate_admin") {
+            if (!companyName) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Company name is required for corporate registration",
+                });
+            }
+
+            const company = new Company({
+                name: companyName,
+                industry,
+                size: size || "1-10",
+                contactPerson: {
+                    name,
+                    email,
+                    position: "Administrator",
+                },
+                admins: [
+                    {
+                        userId: newUser._id,
+                        addedAt: new Date(),
+                    },
+                ],
+            });
+            await company.save();
+
+            // Link user to company
+            newUser.company = company._id;
+            await newUser.save();
+        }
 
         // Generate JWT token
         const token = generateToken(newUser._id);
 
         res.status(201).json({
             success: true,
-            message: "User created successfully",
+            message:
+                role === "corporate_admin"
+                    ? "Corporate account and company created successfully"
+                    : "User created successfully",
             token,
             _id: newUser._id,
             name: newUser.name,

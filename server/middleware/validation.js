@@ -6,10 +6,10 @@
  * Validate user registration data
  */
 const validateUserRegistration = (req, res, next) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role, companyName, industry, size } = req.body;
 
     // Debug logging
-    console.log("📝 Signup request received:", { name, email, passwordLength: password?.length });
+    console.log("📝 Signup request received:", { name, email, role, companyName, passwordLength: password?.length });
 
     if (!name || !email || !password) {
         console.log("❌ Validation failed: Missing fields");
@@ -36,6 +36,26 @@ const validateUserRegistration = (req, res, next) => {
             success: false,
             message: "Password must be at least 6 characters long",
         });
+    }
+
+    // Corporate specific validation
+    if (role === "corporate_admin" && !companyName) {
+        console.log("❌ Validation failed: Missing company name");
+        return res.status(400).json({
+            success: false,
+            message: "Company name is required for corporate registration",
+        });
+    }
+
+    // Corporate specific validation
+    if (role === 'corporate_admin') {
+        if (!companyName || !industry || !size) {
+            console.log("❌ Validation failed: Missing company details for corporate_admin");
+            return res.status(400).json({
+                success: false,
+                message: "Company name, industry, and size are required for corporate registration",
+            });
+        }
     }
 
     console.log("✅ Validation passed");

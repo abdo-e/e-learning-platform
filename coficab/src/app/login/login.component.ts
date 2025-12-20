@@ -11,15 +11,18 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';  // To hold error messages for display
+  isLoading: boolean = false;
 
   constructor(private userService: UserService, private router: Router) { }
 
   onLogin(): void {
     // Clear any previous error messages
     this.errorMessage = '';
+    this.isLoading = true;
 
     if (!this.email || !this.password) {
       this.errorMessage = 'Please fill in all fields.';
+      this.isLoading = false;
       return;
     }
 
@@ -27,6 +30,7 @@ export class LoginComponent {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegex.test(this.email)) {
       this.errorMessage = 'Please enter a valid email address.';
+      this.isLoading = false;
       return;
     }
 
@@ -41,6 +45,7 @@ export class LoginComponent {
 
         if (!userId) {
           this.errorMessage = 'Error: User ID not found!';
+          this.isLoading = false;
           return;
         }
 
@@ -69,6 +74,7 @@ export class LoginComponent {
       error: (error) => {
         console.error('Login failed', error);
         this.errorMessage = 'Invalid email or password!';
+        this.isLoading = false;
       }
     });
   }
