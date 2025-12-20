@@ -39,8 +39,6 @@ const handleCastError = (err) => {
  * Main error handler middleware
  */
 const errorHandler = (err, req, res, next) => {
-    console.error("Error catched by errorHandler:", err);
-
     let error = err;
     error.message = err.message;
 
@@ -99,7 +97,6 @@ const errorHandler = (err, req, res, next) => {
  * Handle 404 errors
  */
 const notFound = (req, res, next) => {
-    console.log(`[NOT FOUND] ${req.method} ${req.originalUrl}`);
     const error = new Error(`Not Found - ${req.originalUrl}`);
     error.statusCode = 404;
     next(error);

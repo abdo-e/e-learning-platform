@@ -7,7 +7,6 @@ const { sendInstructorStatusEmail } = require('../utils/mail.utils');
  * Register as instructor or apply for instructor status
  */
 exports.registerAsInstructor = async (req, res) => {
-    console.log('[CONTROLLER DEBUG] Entered registerAsInstructor');
     try {
         const { bio, expertise } = req.body;
         const userId = req.user._id;
@@ -46,17 +45,21 @@ exports.registerAsInstructor = async (req, res) => {
             });
         }
 
-        // Initialize or update instructor profile
-        user.instructorProfile = {
-            ...user.instructorProfile,
-            isApproved: false,
-            applicationStatus: 'pending',
-            bio: bio || '',
-            expertise: expertise ? (Array.isArray(expertise) ? expertise : expertise.split(',').map(e => e.trim())) : [],
-            cv: cvPath,
-            recommendationLetter: letterPath,
-            appliedAt: new Date()
-        };
+        // Initialize instructorProfile object if it doesn't exist
+        if (!user.instructorProfile) {
+            user.instructorProfile = {};
+        }
+
+        // Update fields individually to avoid Mongoose casting issues with undefined objects
+        user.instructorProfile.isApproved = false;
+        user.instructorProfile.applicationStatus = 'pending';
+        user.instructorProfile.bio = bio || '';
+        user.instructorProfile.expertise = expertise ? (Array.isArray(expertise) ? expertise : expertise.split(',').map(e => e.trim())) : [];
+        user.instructorProfile.cv = cvPath;
+        if (letterPath) {
+            user.instructorProfile.recommendationLetter = letterPath;
+        }
+        user.instructorProfile.appliedAt = new Date();
 
         await user.save();
 
