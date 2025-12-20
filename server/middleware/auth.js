@@ -7,6 +7,7 @@ const User = require('../models/user.model');
 exports.protect = async (req, res, next) => {
     try {
         let token;
+        console.log('[AUTH DEBUG] Headers:', req.headers.authorization ? 'Present' : 'Missing');
 
         // Check if Authorization header exists and starts with Bearer
         if (
@@ -41,6 +42,7 @@ exports.protect = async (req, res, next) => {
 
             // Attach user to request object
             req.user = user;
+            console.log('[AUTH DEBUG] User authenticated:', user.email);
             next();
         } catch (error) {
             console.error('Token verification error:', error);

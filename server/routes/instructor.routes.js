@@ -5,6 +5,13 @@ const { protect } = require('../middleware/auth');
 const { requireInstructor } = require('../middleware/role.middleware');
 const uploadDocs = require('../config/multerDocs');
 
+router.use((req, res, next) => {
+    console.log(`[INSTRUCTOR ROUTER] ${req.method} ${req.url}`);
+    next();
+});
+
+router.get('/ping', (req, res) => res.json({ message: 'Instructor routes are reachable' }));
+
 // Register as instructor (protected)
 router.post('/register', protect, uploadDocs.fields([
     { name: 'cv', maxCount: 1 },

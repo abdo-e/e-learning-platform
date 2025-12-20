@@ -15,6 +15,7 @@ if (!fs.existsSync(docDir)) {
  */
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        console.log('[MULTER DEBUG] Processing file:', file.fieldname);
         cb(null, docDir);
     },
     filename: (req, file, cb) => {

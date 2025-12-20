@@ -7,6 +7,7 @@ const { sendInstructorStatusEmail } = require('../utils/mail.utils');
  * Register as instructor or apply for instructor status
  */
 exports.registerAsInstructor = async (req, res) => {
+    console.log('[CONTROLLER DEBUG] Entered registerAsInstructor');
     try {
         const { bio, expertise } = req.body;
         const userId = req.user._id;
