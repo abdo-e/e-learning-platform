@@ -29,7 +29,7 @@ router.use('/videos', videoRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/subscriptions', subscriptionRoutes);
-router.use('/instructors', instructorRoutes);
+router.use('/instructor', instructorRoutes);
 router.use('/corporate', corporateRoutes);
 
 module.exports = router;
