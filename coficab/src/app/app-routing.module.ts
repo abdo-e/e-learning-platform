@@ -18,6 +18,8 @@ import { CorporateDashboardComponent } from './corporate-dashboard/corporate-das
 import { AuthGuard } from './guards/auth.guard';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { AssignCourseComponent } from './assign-course/assign-course.component';
+import { InstructorApplicationComponent } from './instructor-application/instructor-application.component';
+import { AdminInstructorManagementComponent } from './admin-instructor-management/admin-instructor-management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/acceuil', pathMatch: 'full' },
@@ -45,7 +47,9 @@ const routes: Routes = [
   { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] },
   { path: 'admin-main', component: AdminMainComponent, canActivate: [AuthGuard] },
   { path: 'manage-courses', component: ManageCoursesComponent, canActivate: [AuthGuard] },
-  { path: 'admin/manage-courses', component: ManageCoursesComponent, canActivate: [AuthGuard] }
+  { path: 'admin/manage-courses', component: ManageCoursesComponent, canActivate: [AuthGuard] },
+  { path: 'apply-instructor', component: InstructorApplicationComponent, canActivate: [AuthGuard] },
+  { path: 'admin/instructor-applications', component: AdminInstructorManagementComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

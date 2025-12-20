@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const Course = require('../models/course.model');
 const Payment = require('../models/payment.model');
+const { sendInstructorStatusEmail } = require('../utils/mail.utils');
 
 /**
  * Register as instructor or apply for instructor status
@@ -26,11 +27,33 @@ exports.registerAsInstructor = async (req, res) => {
             });
         }
 
-        // Initialize instructor profile
+        if (user.instructorProfile && user.instructorProfile.applicationStatus === 'pending') {
+            return res.status(400).json({
+                success: false,
+                message: 'Your application is already pending review'
+            });
+        }
+
+        // Get file paths
+        const cvPath = req.files && req.files['cv'] ? req.files['cv'][0].path : null;
+        const letterPath = req.files && req.files['recommendationLetter'] ? req.files['recommendationLetter'][0].path : null;
+
+        if (!cvPath) {
+            return res.status(400).json({
+                success: false,
+                message: 'CV is required for instructor application'
+            });
+        }
+
+        // Initialize or update instructor profile
         user.instructorProfile = {
-            isApproved: false, // Requires admin approval
+            ...user.instructorProfile,
+            isApproved: false,
+            applicationStatus: 'pending',
             bio: bio || '',
-            expertise: expertise || [],
+            expertise: expertise ? (Array.isArray(expertise) ? expertise : expertise.split(',').map(e => e.trim())) : [],
+            cv: cvPath,
+            recommendationLetter: letterPath,
             appliedAt: new Date()
         };
 
@@ -38,14 +61,17 @@ exports.registerAsInstructor = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: 'Instructor application submitted. Awaiting admin approval.',
-            data: user.instructorProfile
+            message: 'Instructor application submitted successfully. Awaiting admin approval.',
+            data: {
+                applicationStatus: user.instructorProfile.applicationStatus,
+                appliedAt: user.instructorProfile.appliedAt
+            }
         });
     } catch (error) {
         console.error('Register as instructor error:', error);
         res.status(500).json({
             success: false,
-            message: 'Error registering as instructor',
+            message: 'Error submitting instructor application',
             error: error.message
         });
     }
@@ -76,14 +102,22 @@ exports.approveInstructor = async (req, res) => {
 
         user.role = 'instructor';
         user.instructorProfile.isApproved = true;
+        user.instructorProfile.applicationStatus = 'approved';
         user.instructorProfile.approvedAt = new Date();
 
         await user.save();
 
+        // Send email notification
+        await sendInstructorStatusEmail(user, 'approved');
+
         res.status(200).json({
             success: true,
-            message: 'Instructor approved successfully',
-            data: user
+            message: 'Instructor approved successfully and notification email sent',
+            data: {
+                userId: user._id,
+                role: user.role,
+                status: user.instructorProfile.applicationStatus
+            }
         });
     } catch (error) {
         console.error('Approve instructor error:', error);
@@ -410,5 +444,96 @@ exports.getAllInstructors = async (req, res) => {
             message: 'Error fetching instructors',
             error: error.message
         });
+    }
+};
+/**
+ * Reject instructor application (Admin only)
+ */
+exports.rejectInstructor = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        if (!user.instructorProfile || user.instructorProfile.applicationStatus !== 'pending') {
+            return res.status(400).json({
+                success: false,
+                message: 'User does not have a pending application'
+            });
+        }
+
+        user.instructorProfile.applicationStatus = 'rejected';
+        user.instructorProfile.isApproved = false;
+
+        await user.save();
+
+        // Send email notification
+        await sendInstructorStatusEmail(user, 'rejected');
+
+        res.status(200).json({
+            success: true,
+            message: 'Instructor application rejected and notification email sent'
+        });
+    } catch (error) {
+        console.error('Reject instructor error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error rejecting instructor',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Get all pending instructor applications (Admin only)
+ */
+exports.getPendingApplications = async (req, res) => {
+    try {
+        const applications = await User.find({
+            'instructorProfile.applicationStatus': 'pending'
+        }).select('name email instructorProfile createdAt');
+
+        res.status(200).json({
+            success: true,
+            count: applications.length,
+            data: applications
+        });
+    } catch (error) {
+        console.error('Get pending applications error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching pending applications',
+            error: error.message
+        });
+    }
+};
+
+/**
+ * Download instructor document (Admin only)
+ */
+exports.downloadDocument = async (req, res) => {
+    try {
+        const { userId, type } = req.params; // type: 'cv' or 'recommendationLetter'
+        const user = await User.findById(userId);
+
+        if (!user || !user.instructorProfile) {
+            return res.status(404).json({ message: 'User or documents not found' });
+        }
+
+        const filePath = user.instructorProfile[type];
+        if (!filePath) {
+            return res.status(404).json({ message: 'Document not found' });
+        }
+
+        res.download(filePath);
+    } catch (error) {
+        res.status(500).json({ message: 'Error downloading document', error: error.message });
     }
 };

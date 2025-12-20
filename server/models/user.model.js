@@ -152,6 +152,17 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false
     },
+    applicationStatus: {
+      type: String,
+      enum: ['none', 'pending', 'approved', 'rejected'],
+      default: 'none'
+    },
+    cv: {
+      type: String // URL or path to uploaded CV
+    },
+    recommendationLetter: {
+      type: String // URL or path to uploaded letter
+    },
     bio: {
       type: String,
       trim: true

@@ -3,9 +3,13 @@ const router = express.Router();
 const instructorController = require('../controllers/instructor.controller');
 const { protect } = require('../middleware/auth');
 const { requireInstructor } = require('../middleware/role.middleware');
+const uploadDocs = require('../config/multerDocs');
 
 // Register as instructor (protected)
-router.post('/register', protect, instructorController.registerAsInstructor);
+router.post('/register', protect, uploadDocs.fields([
+    { name: 'cv', maxCount: 1 },
+    { name: 'recommendationLetter', maxCount: 1 }
+]), instructorController.registerAsInstructor);
 
 // Get instructor dashboard (protected, instructor only)
 router.get('/dashboard', protect, requireInstructor, instructorController.getInstructorDashboard);
@@ -23,7 +27,10 @@ router.put('/profile', protect, requireInstructor, instructorController.updateIn
 router.get('/:instructorId', instructorController.getInstructorProfile);
 
 // Admin routes (protected)
-router.post('/approve/:userId', protect, instructorController.approveInstructor); // TODO: Add admin middleware
-router.get('/all', protect, instructorController.getAllInstructors); // TODO: Add admin middleware
+router.post('/approve/:userId', protect, instructorController.approveInstructor); // TODO: Add admin check middleware if available
+router.post('/reject/:userId', protect, instructorController.rejectInstructor);
+router.get('/applications/pending', protect, instructorController.getPendingApplications);
+router.get('/document/:userId/:type', protect, instructorController.downloadDocument);
+router.get('/all', protect, instructorController.getAllInstructors);
 
 module.exports = router;

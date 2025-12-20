@@ -318,4 +318,45 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/api/users/${userId}/streak`, {})
       .pipe(catchError(this.handleError));
   }
+
+  /**
+   * Apply for instructor status
+   */
+  applyAsInstructor(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/instructor/register`, formData)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Get all pending instructor applications (Admin only)
+   */
+  getPendingInstructorApplications(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/instructor/applications/pending`)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Approve instructor application (Admin only)
+   */
+  approveInstructorApplication(userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/instructor/approve/${userId}`, {})
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Reject instructor application (Admin only)
+   */
+  rejectInstructorApplication(userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/instructor/reject/${userId}`, {})
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Download instructor document
+   */
+  downloadInstructorDocument(userId: string, type: 'cv' | 'recommendationLetter'): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/api/instructor/document/${userId}/${type}`, {
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
 }

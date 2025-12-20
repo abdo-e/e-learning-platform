@@ -27,6 +27,8 @@ import { CoursePurchaseComponent } from './course-purchase/course-purchase.compo
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { AssignCourseComponent } from './assign-course/assign-course.component';
+import { InstructorApplicationComponent } from './instructor-application/instructor-application.component';
+import { AdminInstructorManagementComponent } from './admin-instructor-management/admin-instructor-management.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +53,8 @@ import { AssignCourseComponent } from './assign-course/assign-course.component';
     CoursePurchaseComponent,
     AddEmployeeComponent,
     AssignCourseComponent,
+    InstructorApplicationComponent,
+    AdminInstructorManagementComponent,
   ],
   imports: [
     BrowserModule,
