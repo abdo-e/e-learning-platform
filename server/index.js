@@ -43,14 +43,7 @@ app.get("/", (req, res) => {
 });
 
 // API Routes
-const instructorRoutes = require("./routes/instructor.routes");
 app.use("/api", routes);
-app.use("/api/instructor", instructorRoutes);
-
-// Diagnostic route
-app.get("/api/test-route", (req, res) => {
-  res.json({ message: "API is working correctly" });
-});
 
 // Legacy video upload route (frontend uses /upload instead of /api/videos/upload)
 const upload = require("./config/multer");

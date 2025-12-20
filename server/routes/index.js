@@ -24,6 +24,7 @@ router.get('/health', (req, res) => {
 });
 
 // Register routes
+router.use('/instructor', instructorRoutes);
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/courses', courseRoutes);
@@ -31,7 +32,7 @@ router.use('/videos', videoRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/subscriptions', subscriptionRoutes);
-// router.use('/instructor', instructorRoutes); (Moved to index.js for better visibility)
+// router.use('/instructor', instructorRoutes); 
 router.use('/corporate', corporateRoutes);
 
 module.exports = router;
